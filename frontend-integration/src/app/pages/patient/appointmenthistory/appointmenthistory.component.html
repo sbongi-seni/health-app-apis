@@ -1,0 +1,58 @@
+<!-- src/app/pages/patient/appointmenthistory/appointmenthistory.component.html -->
+<div class="container-fluid">
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-0 pt-4">
+      <h4 class="mb-1">My Appointments</h4>
+      <p class="text-muted mb-0">All your past and upcoming appointments.</p>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="text-center py-4">
+        <div class="spinner-border text-success"></div>
+      </div>
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+      <div *ngIf="!loading && appointments.length === 0 && !error" class="text-muted">
+        No appointments found.
+      </div>
+
+      <div class="table-responsive d-none d-md-block" *ngIf="appointments.length > 0">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>Doctor</th>
+              <th>Date & Time</th>
+              <th>Status</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let appt of appointments">
+              <td class="fw-semibold">{{ appt.doctorName }}</td>
+              <td>{{ appt.appointmentDateTime | date:'d MMM y, HH:mm' }}</td>
+              <td>
+                <span class="badge"
+                  [class.text-bg-success]="appt.status === 'Scheduled'"
+                  [class.text-bg-secondary]="appt.status === 'Completed'"
+                  [class.text-bg-danger]="appt.status === 'Cancelled'">
+                  {{ appt.status }}
+                </span>
+              </td>
+              <td>{{ appt.notes ?? '—' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-md-none" *ngIf="appointments.length > 0">
+        <div class="card border mb-3" *ngFor="let appt of appointments">
+          <div class="card-body">
+            <h6 class="fw-bold">{{ appt.doctorName }}</h6>
+            <p class="mb-1"><strong>Date:</strong> {{ appt.appointmentDateTime | date:'d MMM y, HH:mm' }}</p>
+            <p class="mb-1"><strong>Status:</strong> {{ appt.status }}</p>
+            <p class="mb-0"><strong>Notes:</strong> {{ appt.notes ?? '—' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
