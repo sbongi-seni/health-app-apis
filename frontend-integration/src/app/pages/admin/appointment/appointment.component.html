@@ -1,0 +1,71 @@
+<!-- src/app/pages/admin/appointment/appointment.component.html -->
+<div class="container-fluid">
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-0 pt-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div>
+        <h4 class="mb-1">Manage Appointments</h4>
+        <p class="text-muted mb-0">All patient appointments across the system.</p>
+      </div>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="text-center py-4">
+        <div class="spinner-border text-dark"></div>
+      </div>
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+      <div *ngIf="!loading && appointments.length === 0 && !error" class="text-muted">
+        No appointments found.
+      </div>
+
+      <div class="table-responsive d-none d-md-block" *ngIf="appointments.length > 0">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Doctor</th>
+              <th>Date & Time</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let appt of appointments">
+              <td class="fw-semibold">{{ appt.patientName }}</td>
+              <td>{{ appt.doctorName }}</td>
+              <td>{{ appt.appointmentDateTime | date:'d MMM y, HH:mm' }}</td>
+              <td>
+                <span class="badge"
+                  [class.text-bg-success]="appt.status === 'Scheduled'"
+                  [class.text-bg-secondary]="appt.status === 'Completed'"
+                  [class.text-bg-danger]="appt.status === 'Cancelled'">
+                  {{ appt.status }}
+                </span>
+              </td>
+              <td>
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-success" (click)="updateStatus(appt.appointmentId, 'Completed')">Complete</button>
+                  <button class="btn btn-outline-danger" (click)="updateStatus(appt.appointmentId, 'Cancelled')">Cancel</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-md-none" *ngIf="appointments.length > 0">
+        <div class="card border mb-3" *ngFor="let appt of appointments">
+          <div class="card-body">
+            <h6 class="fw-bold">{{ appt.patientName }}</h6>
+            <p class="mb-1"><strong>Doctor:</strong> {{ appt.doctorName }}</p>
+            <p class="mb-1"><strong>Date:</strong> {{ appt.appointmentDateTime | date:'d MMM y, HH:mm' }}</p>
+            <p class="mb-2"><strong>Status:</strong> {{ appt.status }}</p>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-success" (click)="updateStatus(appt.appointmentId, 'Completed')">Complete</button>
+              <button class="btn btn-outline-danger" (click)="updateStatus(appt.appointmentId, 'Cancelled')">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

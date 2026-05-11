@@ -59,7 +59,7 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogWarning(ex, "Database seeding skipped – SQL Server may not be available in this environment.");
+        logger.LogWarning(ex, "Database seeding skipped - SQL Server may not be available in this environment.");
     }
 }
 

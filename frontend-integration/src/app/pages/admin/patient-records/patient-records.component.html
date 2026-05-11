@@ -1,0 +1,56 @@
+<!-- src/app/pages/admin/patient-records/patient-records.component.html -->
+<div class="container-fluid">
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-0 pt-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div>
+        <h4 class="mb-1">Patient Records</h4>
+        <p class="text-muted mb-0">Admin-only overview of patient medical records.</p>
+      </div>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="text-center py-4">
+        <div class="spinner-border text-dark"></div>
+      </div>
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+      <div *ngIf="!loading && records.length === 0 && !error" class="text-muted">
+        No records found.
+      </div>
+
+      <div class="table-responsive d-none d-md-block" *ngIf="records.length > 0">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Diagnosis</th>
+              <th>Treatment</th>
+              <th>Doctor</th>
+              <th>Visit Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of records">
+              <td class="fw-semibold">{{ record.patientName }}</td>
+              <td>{{ record.diagnosis }}</td>
+              <td>{{ record.treatment ?? '—' }}</td>
+              <td>{{ record.doctorName }}</td>
+              <td>{{ record.visitDate | date:'d MMM y' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-md-none" *ngIf="records.length > 0">
+        <div class="card border mb-3" *ngFor="let record of records">
+          <div class="card-body">
+            <h6 class="fw-bold">{{ record.patientName }}</h6>
+            <p class="mb-1"><strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
+            <p class="mb-1"><strong>Treatment:</strong> {{ record.treatment ?? '—' }}</p>
+            <p class="mb-1"><strong>Doctor:</strong> {{ record.doctorName }}</p>
+            <p class="mb-0"><strong>Visit Date:</strong> {{ record.visitDate | date:'d MMM y' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
